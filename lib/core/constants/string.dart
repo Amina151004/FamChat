@@ -6,4 +6,4 @@ const splash = "/splash";
 const home = "/home";
 const wrapper = "/wrapper";
 const login = "/login";
-const register = "/register";
+const signup = "/signup";
