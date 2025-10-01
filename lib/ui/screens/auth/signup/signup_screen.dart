@@ -4,6 +4,7 @@ import 'package:fam_chat/core/constants/styles.dart';
 import 'package:fam_chat/core/enums/enums.dart';
 import 'package:fam_chat/core/extension/widget_extensions.dart';
 import 'package:fam_chat/core/services/auth_service.dart';
+import 'package:fam_chat/core/services/database_service.dart';
 import 'package:fam_chat/ui/screens/auth/signup/signup_viewmodel.dart';
 import 'package:fam_chat/ui/widgets/button.dart';
 import 'package:fam_chat/ui/widgets/textfeild.dart';
@@ -18,7 +19,7 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => SignupViewmodel(AuthService()),
+      create: (context) => SignupViewmodel(AuthService(), DatabaseService()),
       child: Consumer<SignupViewmodel>(
         builder: (context, model, _) {
           return Scaffold(

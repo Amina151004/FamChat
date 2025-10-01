@@ -1,15 +1,18 @@
 import 'dart:developer';
 
 import 'package:fam_chat/core/enums/enums.dart';
+import 'package:fam_chat/core/models/user_model.dart';
 import 'package:fam_chat/core/other/base_viewmodel.dart';
 import 'package:fam_chat/core/services/auth_service.dart';
+import 'package:fam_chat/core/services/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignupViewmodel extends BaseViewmodel {
   final AuthService _auth;
+  final DatabaseService _db;
 
-  SignupViewmodel(this._auth);
+  SignupViewmodel(this._auth, this._db, [storageService]);
 
   String _name = '';
   String _email = '';
@@ -45,7 +48,13 @@ class SignupViewmodel extends BaseViewmodel {
       if (_password != _confirmPassword) {
         throw Exception("Passwords do not match");
       }
-      await _auth.signup(_email, _password);
+      final res = await _auth.signup(_email, _password);
+      if (res != null) {
+        UserModel user = UserModel(uid: res.uid, name: _name, email: _email);
+
+        await _db.saveUser(user.toMap());
+      }
+
       setState(ViewState.idle);
     } on FirebaseAuthException catch (e) {
       setState(ViewState.idle);

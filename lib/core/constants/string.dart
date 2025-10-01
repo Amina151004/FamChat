@@ -7,3 +7,10 @@ const home = "/home";
 const wrapper = "/wrapper";
 const login = "/login";
 const signup = "/signup";
+const chatroom = "/chatroom";
+
+//icons
+const homeIcon = "assets/home.png";
+const profileIcon = "assets/user.png";
+const chatsIcon = "assets/chats.png";
+const searchIcon = "assets/search.png";
