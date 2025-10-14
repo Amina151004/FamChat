@@ -8,6 +8,7 @@ const wrapper = "/wrapper";
 const login = "/login";
 const signup = "/signup";
 const chatroom = "/chatroom";
+const profile = "/profile";
 
 //icons
 const homeIcon = "assets/home.png";

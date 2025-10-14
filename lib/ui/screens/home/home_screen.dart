@@ -23,6 +23,7 @@ class HomeScreen extends StatelessWidget {
                       : InkWell(
                         onTap: () {
                           AuthService().logout();
+                          Provider.of<UserProvider>(context).clearUser();
                         },
                         child: Text(
                           'Welcome, ${userProvider.user!.toString()} (Tap to logout)',

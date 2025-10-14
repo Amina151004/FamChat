@@ -1,14 +1,18 @@
 import 'package:fam_chat/core/constants/styles.dart';
+import 'package:fam_chat/core/models/user_model.dart';
 import 'package:fam_chat/ui/screens/bottom_navigation/chats_list/chat_room/chat_widgets.dart';
+import 'package:fam_chat/ui/screens/other/user_provider.dart';
 import 'package:fam_chat/ui/widgets/textfeild.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatelessWidget {
-  const ChatScreen({super.key});
-
+  const ChatScreen({super.key, required this.receiver});
+  final UserModel receiver;
   @override
   Widget build(BuildContext context) {
+    final currentUser = Provider.of<UserProvider>(context).user;
     return Scaffold(
       body: Column(
         children: [
@@ -21,7 +25,7 @@ class ChatScreen extends StatelessWidget {
               child: Column(
                 children: [
                   35.verticalSpace,
-                  _buildHeader(context, name: "John doe"),
+                  _buildHeader(context, name: receiver.name!),
                   25.verticalSpace,
                   Expanded(
                     child: ListView.separated(
