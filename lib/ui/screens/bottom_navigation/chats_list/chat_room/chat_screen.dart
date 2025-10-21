@@ -1,5 +1,7 @@
 import 'package:fam_chat/core/constants/styles.dart';
 import 'package:fam_chat/core/models/user_model.dart';
+import 'package:fam_chat/core/services/chat_service.dart';
+import 'package:fam_chat/ui/screens/bottom_navigation/chats_list/chat_room/chat_viewmodel.dart';
 import 'package:fam_chat/ui/screens/bottom_navigation/chats_list/chat_room/chat_widgets.dart';
 import 'package:fam_chat/ui/screens/other/user_provider.dart';
 import 'package:fam_chat/ui/widgets/textfeild.dart';
@@ -13,36 +15,56 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUser = Provider.of<UserProvider>(context).user;
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 1.sw * 0.05,
-                vertical: 10.h,
-              ),
-              child: Column(
-                children: [
-                  35.verticalSpace,
-                  _buildHeader(context, name: receiver.name!),
-                  25.verticalSpace,
-                  Expanded(
-                    child: ListView.separated(
-                      padding: const EdgeInsets.all(0),
-                      separatorBuilder: (context, index) => 10.verticalSpace,
-                      itemCount: 5,
-                      itemBuilder:
-                          (context, index) => ChatBubble(isCurrentUser: false),
+    return ChangeNotifierProvider(
+      create: (context) => ChatViewmodel(ChatService(), currentUser!, receiver),
+      child: Consumer<ChatViewmodel>(
+        builder: (context, model, _) {
+          return Scaffold(
+            body: Column(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 1.sw * 0.05,
+                      vertical: 10.h,
+                    ),
+                    child: Column(
+                      children: [
+                        35.verticalSpace,
+                        _buildHeader(context, name: receiver.name!),
+                        25.verticalSpace,
+                        Expanded(
+                          child: ListView.separated(
+                            padding: const EdgeInsets.all(0),
+                            separatorBuilder:
+                                (context, index) => 10.verticalSpace,
+                            itemCount: model.messages.length,
+                            itemBuilder: (context, index) {
+                              final message = model.messages[index];
+                              return ChatBubble(
+                                isCurrentUser:
+                                    message.senderId == currentUser!.uid,
+                                message: message,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
+                ),
 
-          BottomField(onTap: () {}, onChanged: (p0) {}),
-        ],
+                BottomField(
+                  controller: model.messageController,
+                  onTap: () {
+                    model.saveMessage();
+                  },
+                  onChanged: (p0) {},
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

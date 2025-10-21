@@ -16,11 +16,12 @@ class ChatService {
     }
   }
 
-  getMessage(String chatRoomId) async {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getMessage(String chatRoomId) {
     return _fire
-        .collection('chatRooms')
+        .collection("chatRooms")
         .doc(chatRoomId)
-        .collection('messages')
+        .collection("messages")
+        .orderBy("timestamp", descending: false)
         .snapshots();
   }
 }

@@ -65,4 +65,8 @@ class SignupViewmodel extends BaseViewmodel {
       rethrow;
     }
   }
+
+  bool get isFormValid {
+    return _name.isNotEmpty && _email.contains('@');
+  }
 }

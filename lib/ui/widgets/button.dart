@@ -20,7 +20,7 @@ class MyButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: primary,
+        backgroundColor: onPressed == null ? Colors.grey : primary,
         minimumSize: Size(1.sw, 40.h),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.r),

@@ -45,27 +45,32 @@ class ChatsListScreen extends StatelessWidget {
                           child: Center(child: CircularProgressIndicator()),
                         )
                         : Expanded(
-                          child: ListView.separated(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 5,
-                              horizontal: 0,
-                            ),
-                            separatorBuilder:
-                                (context, index) => 8.verticalSpace,
-                            itemCount: model.filteredUsers.length,
-                            itemBuilder: (context, index) {
-                              final user = model.filteredUsers[index];
-                              return ChatTile(
-                                user: user,
-                                onTap:
-                                    () => Navigator.pushNamed(
-                                      context,
-                                      chatroom,
-                                      arguments: user,
+                          child:
+                              model.filteredUsers.isEmpty
+                                  ? const Center(
+                                    child: Text("No chats available"),
+                                  )
+                                  : ListView.separated(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 5,
+                                      horizontal: 0,
                                     ),
-                              );
-                            },
-                          ),
+                                    separatorBuilder:
+                                        (context, index) => 8.verticalSpace,
+                                    itemCount: model.filteredUsers.length,
+                                    itemBuilder: (context, index) {
+                                      final user = model.filteredUsers[index];
+                                      return ChatTile(
+                                        user: user,
+                                        onTap:
+                                            () => Navigator.pushNamed(
+                                              context,
+                                              chatroom,
+                                              arguments: user,
+                                            ),
+                                      );
+                                    },
+                                  ),
                         ),
                   ],
                 ),
@@ -91,7 +96,11 @@ class ChatTile extends StatelessWidget {
       leading: CircleAvatar(
         backgroundColor: grey,
         radius: 30,
-        child: Text(user.name![0]),
+        child: Text(
+          (user.name != null && user.name!.isNotEmpty)
+              ? user.name![0].toUpperCase()
+              : '?',
+        ),
       ),
       title: Text(user.name!),
       subtitle: Text(

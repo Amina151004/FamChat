@@ -1,14 +1,18 @@
 import 'package:fam_chat/core/constants/colors.dart';
 import 'package:fam_chat/core/constants/styles.dart';
+import 'package:fam_chat/core/models/message_model.dart';
 import 'package:fam_chat/ui/widgets/textfeild.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class BottomField extends StatelessWidget {
-  const BottomField({super.key, this.onTap, this.onChanged});
+  const BottomField({super.key, this.onTap, this.onChanged, this.controller});
 
   final Function()? onTap;
   final Function(String)? onChanged;
+
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +21,7 @@ class BottomField extends StatelessWidget {
       child: Row(
         children: [
           InkWell(
-            onTap: onTap,
+            onTap: null,
             child: CircleAvatar(
               backgroundColor: Colors.white,
               child: Icon(Icons.add),
@@ -26,9 +30,11 @@ class BottomField extends StatelessWidget {
           10.horizontalSpace,
           Expanded(
             child: CustomTextfield(
+              controller: controller,
               onchanged: onChanged,
               hintText: "type your message",
               isChat: true,
+              onTap: onTap,
             ),
           ),
         ],
@@ -38,8 +44,13 @@ class BottomField extends StatelessWidget {
 }
 
 class ChatBubble extends StatelessWidget {
-  const ChatBubble({super.key, this.isCurrentUser = true});
+  const ChatBubble({
+    super.key,
+    this.isCurrentUser = true,
+    required this.message,
+  });
   final bool isCurrentUser;
+  final Message message;
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +82,12 @@ class ChatBubble extends StatelessWidget {
               isCurrentUser ? CrossAxisAlignment.start : CrossAxisAlignment.end,
           children: [
             Text(
-              "Hello, how are you?",
+              message.content!,
               style: body.copyWith(color: isCurrentUser ? Colors.white : null),
             ),
             5.verticalSpace,
             Text(
-              "8:00PM",
+              DateFormat('hh:mm a').format(message.timestamp!),
               style: small.copyWith(color: isCurrentUser ? Colors.white : null),
             ),
           ],

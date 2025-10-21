@@ -11,17 +11,25 @@ class CustomTextfield extends StatelessWidget {
     required this.onchanged,
     this.isSearch = false,
     this.isChat = false,
+    this.controller,
+    this.onTap,
+    this.isPassword = false,
   });
 
   final String? hintText;
   final Function(String)? onchanged;
   final bool isSearch;
   final bool isChat;
+  final bool isPassword;
+  final TextEditingController? controller;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       onChanged: onchanged,
+      obscureText: isPassword,
       decoration: InputDecoration(
         filled: true,
         fillColor: isChat ? Colors.white : grey.withOpacity(0.2),
@@ -45,6 +53,8 @@ class CustomTextfield extends StatelessWidget {
                   ),
                   child: Image.asset(searchIcon),
                 )
+                : isChat
+                ? InkWell(onTap: onTap, child: Icon(Icons.send))
                 : null,
       ),
     );
